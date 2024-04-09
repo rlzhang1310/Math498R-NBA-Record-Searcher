@@ -25,3 +25,12 @@ class Searcher:
         max_ftm_in_game = self.data['FTM'].max()
         players_with_max = self.data.loc[self.data['FTM'] == max_ftm_in_game]
         return players_with_max['PLAYER_NAME'].unique()
+    
+    def get_most_fgm_in1game_in_range(self, start, end):
+        start = pd.to_datetime(start)
+        end = pd.to_datetime(end)
+        range = pd.date_range(start, end)
+        self.data = self.data[self.data['GAME_DATE'].isin(range)]
+        max_ftm_in_game = self.data['FGM'].max()
+        players_with_max = self.data.loc[self.data['FGM'] == max_ftm_in_game]
+        return players_with_max['PLAYER_NAME'].unique()

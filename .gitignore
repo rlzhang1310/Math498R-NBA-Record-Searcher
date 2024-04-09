@@ -1,5 +1,9 @@
 .DS_Store
 .DS_Store?
 ._*
+__pycache__
+*.py[cod]
+*.pyo
+*.pyc
 ./player_data/NBA_player_box_score_stats_1950_2022.csv
 NBA Player Box Score Stats(1950 - 2022).csv
