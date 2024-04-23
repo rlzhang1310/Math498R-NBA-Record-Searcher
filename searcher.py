@@ -8,7 +8,6 @@ import numpy as np
 class Searcher:
     def __init__(self, data):
         self.data = data
-        self.data['GAME_DATE'] = pd.to_datetime(self.data['GAME_DATE'])
 
 
     def search_max_score(self, from_year=1946, to_year=9999):
@@ -21,18 +20,18 @@ class Searcher:
         start = pd.to_datetime(start)
         end = pd.to_datetime(end)
         range = pd.date_range(start, end)
-        self.data = self.data[self.data['GAME_DATE'].isin(range)]
-        max_ftm_in_game = self.data['FTM'].max()
-        players_with_max = self.data.loc[self.data['FTM'] == max_ftm_in_game]
+        query_df = self.data[self.data['GAME_DATE'].isin(range)]
+        max_ftm_in_game = query_df['FTM'].max()
+        players_with_max = query_df.loc[query_df['FTM'] == max_ftm_in_game]
         return players_with_max['PLAYER_NAME'].unique()
     
     def get_most_fgm_in1game_in_range(self, start, end):
         start = pd.to_datetime(start)
         end = pd.to_datetime(end)
         range = pd.date_range(start, end)
-        self.data = self.data[self.data['GAME_DATE'].isin(range)]
-        max_fgm_in_game = self.data['FGM'].max()
-        players_with_max = self.data.loc[self.data['FGM'] == max_fgm_in_game]
+        query_df = self.data[self.data['GAME_DATE'].isin(range)]
+        max_fgm_in_game = query_df['FGM'].max()
+        players_with_max = query_df.loc[query_df['FGM'] == max_fgm_in_game]
         return players_with_max['PLAYER_NAME'].unique()
     
     # how many times has a stat line been achieved?
