@@ -76,7 +76,7 @@ class GUI:
         if stat:
             print(self.searcher.get_most_stat_in1game_in_range(from_year, to_year, stat))
         else:
-            print(self.searcher.)
+            print(self.searcher.get_num_times_stat_achieved_in_range(from_year, to_year, stat, 0))
 
         # self.searcher.find(stat, from_year, to_year)
 

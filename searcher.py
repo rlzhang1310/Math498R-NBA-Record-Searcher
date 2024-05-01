@@ -92,7 +92,16 @@ class Searcher:
     # how many times has a stat line been achieved?
     # assists, blocks, shots
     # might not work
-    
+    def get_num_times_stat_achieved_in_range(self, start, end, stat, number):
+        start = pd.to_datetime(start)
+        end = pd.to_datetime(end)
+        range = pd.date_range(start, end)
+        try:
+            df = self.data[self.data['GAME_DATE'].isin(range)]
+            num = df.loc[self.data[stat] >= number]
+            return len(num)        
+        except KeyError:
+            print(f"{stat} Stat not recorded in specified timeframe")
     def get_num_times_fgm_achieved_in_range(self, fgm, start, end) :
         start = pd.to_datetime(start)
         end = pd.to_datetime(end)
