@@ -16,11 +16,6 @@ def main():
     searcher = Searcher(data)
     app = GUI(searcher, data_processor)
 
-    # print(searcher.search_max_score(1963))
-    # print(searcher.get_most_stl_in1game_in_range('2000', '2022'))
-    # print(searcher.get_most_fgm_in1game_in_range('2000', '2022'))
-    # print(searcher.get_num_times_ftm_achieved_in_range(10, '2000', '2022'))
-
 if __name__ == "__main__":
     main()
 

@@ -11,8 +11,6 @@ class DataProcessor:
         self.data = data
         self.data['GAME_DATE'] = pd.to_datetime(self.data['GAME_DATE'])
         self.last_update = self.data['GAME_DATE'].max()
-        # print(self.last_update)
-        # print(self.data['GAME_DATE'].min())
 
     def update(self):
         ## updates new data from the previous update
