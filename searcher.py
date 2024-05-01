@@ -34,37 +34,97 @@ class Searcher:
         players_with_max = query_df.loc[query_df['FGM'] == max_fgm_in_game]
         return players_with_max['PLAYER_NAME'].unique()
     
+    def get_most_ast_in1game_in_range(self, start, end):
+        start = pd.to_datetime(start)
+        end = pd.to_datetime(end)
+        range = pd.date_range(start, end)
+        query_df = self.data[self.data['GAME_DATE'].isin(range)]
+        max_ast_in_game = query_df['AST'].max()
+        players_with_max = query_df.loc[query_df['AST'] == max_ast_in_game]
+        return players_with_max['PLAYER_NAME'].unique()
+    
+    def get_most_blk_in1game_in_range(self, start, end):
+        start = pd.to_datetime(start)
+        end = pd.to_datetime(end)
+        range = pd.date_range(start, end)
+        query_df = self.data[self.data['GAME_DATE'].isin(range)]
+        max_blk_in_game = query_df['BLK'].max()
+        players_with_max = query_df.loc[query_df['BLK'] == max_blk_in_game]
+        return players_with_max['PLAYER_NAME'].unique()
+    
+    def get_most_reb_in1game_in_range(self, start, end):
+        start = pd.to_datetime(start)
+        end = pd.to_datetime(end)
+        range = pd.date_range(start, end)
+        query_df = self.data[self.data['GAME_DATE'].isin(range)]
+        max_reb_in_game = query_df['REB'].max()
+        players_with_max = query_df.loc[query_df['REB'] == max_reb_in_game]
+        return players_with_max['PLAYER_NAME'].unique()
+    
+    def get_most_stl_in1game_in_range(self, start, end):
+        start = pd.to_datetime(start)
+        end = pd.to_datetime(end)
+        range = pd.date_range(start, end)
+        query_df = self.data[self.data['GAME_DATE'].isin(range)]
+        max_stl_in_game = query_df['STL'].max()
+        players_with_max = query_df.loc[query_df['STL'] == max_stl_in_game]
+        return players_with_max['PLAYER_NAME'].unique()
+    
     # how many times has a stat line been achieved?
     # assists, blocks, shots
     # might not work
 
-    def get_num_times_fgm_achieved(self, fgm) :
-        num = self.data.loc[self.data['FGM'] >= fgm]
-        return num
+    def get_num_times_fgm_achieved_in_range(self, fgm, start, end) :
+        start = pd.to_datetime(start)
+        end = pd.to_datetime(end)
+        range = pd.date_range(start, end)
+        df = self.data[self.data['GAME_DATE'].isin(range)]
+        num = df.loc[self.data['FGM'] >= fgm]
+        return len(num)
     
-    def get_num_times_ftm_achieved(self, ftm) :
-        num = self.data.loc[self.data['FTM'] >= ftm]
-        return num
+    def get_num_times_ftm_achieved_in_range(self, ftm, start, end) :
+        start = pd.to_datetime(start)
+        end = pd.to_datetime(end)
+        range = pd.date_range(start, end)
+        df = self.data[self.data['GAME_DATE'].isin(range)]
+        num = df[self.data['FTM'] >= ftm]
+        return len(num)
     
-    def get_num_times_ast_achieved(self, ast):
+    def get_num_times_ast_achieved_in_range(self, ast, start, end):
         # filter out non-tracked years
+        start = pd.to_datetime(start)
+        end = pd.to_datetime(end)
+        range = pd.date_range(start, end)
         df = self.data.loc[(self.data['GAME_DATE'] >= '1970-01-01')]
+        df = df[df['GAME_DATE'].isin(range)]
         num = df.loc[df['AST'] >= ast]
-        return num
+        return len(num)
     
-    def get_num_times_blk_achieved(self, blk):
+    def get_num_times_blk_achieved_in_range(self, blk, start, end):
         # filter out non-tracked years
         df = self.data.loc[(self.data['GAME_DATE'] >= '1974-01-01')]
+        start = pd.to_datetime(start)
+        end = pd.to_datetime(end)
+        range = pd.date_range(start, end)
+        df = df[df['GAME_DATE'].isin(range)]
         num = df.loc[df['BLK'] >= blk]
-        return num
+        return len(num)
     
     def get_num_times_reb_achieved(self, reb):
         # filter out non-tracked years
-        num = self.data.loc[self.data['REB'] >= reb]
-        return num
+        start = pd.to_datetime(start)
+        end = pd.to_datetime(end)
+        range = pd.date_range(start, end)
+        df = self.data[self.data['GAME_DATE'].isin(range)]
+        num = df[self.data['REB'] >= reb]
+        return len(num)
     
     def get_num_times_stl_achieved(self, stl):
         # filter out non-tracked years
         df = self.data.loc[(self.data['GAME_DATE'] >= '1974-01-01')]
+        start = pd.to_datetime(start)
+        end = pd.to_datetime(end)
+        range = pd.date_range(start, end)
+        df = df[df['GAME_DATE'].isin(range)]
         num = df.loc[df['STL'] >= stl]
-        return num
+        return len(num)
