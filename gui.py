@@ -91,7 +91,7 @@ class GUI:
 
         # selected statistic variable
         self.selected_stat2 = IntVar() 
-        self.selected_stat2.set(-4)
+        self.selected_stat2.set(2)
 
         # buttons for each stat
         for index, stat in enumerate(self.stats_options):
@@ -121,12 +121,15 @@ class GUI:
         self.year_ended_label.grid(row=5, column=2, columnspan=6,pady=5, padx=5)
 
         # entry for start/end dates
-        if self.selected_stat2 == -1: ## similar to tab1
-            self.year_started2 = DateEntry(self.num_time_tab, locale='en_US', date_pattern='yyyy-mm-dd', year = 1946, month = 11, day = 1)
-        elif self.stats_options[self.selected_stat2.get()] == 'AST':
-            self.year_started2 = DateEntry(self.num_time_tab, locale='en_US', date_pattern='yyyy-mm-dd', year = 1970, month = 1, day = 1)
+        if self.stats_options[self.selected_stat2.get()] == 'AST': ## updates initial date in DateEntry on selected stat
+            self.year_started2 = DateEntry(self.num_time_tab, locale='en_US', date_pattern='yyyy-mm-dd', 
+                                           year = 1970, month = 1, day = 1)
         elif self.stats_options[self.selected_stat2.get()] == 'BLK' or self.stats_options[self.selected_stat2.get()] == 'STL':
-            self.year_started2 = DateEntry(self.num_time_tab, locale='en_US', date_pattern='yyyy-mm-dd', year = 1974, month = 1, day = 1)
+            self.year_started2 = DateEntry(self.num_time_tab, locale='en_US', date_pattern='yyyy-mm-dd', 
+                                           year = 1974, month = 1, day = 1)
+        else:
+            self.year_started2 = DateEntry(self.num_time_tab, locale='en_US', date_pattern='yyyy-mm-dd', 
+                                           year = 1946, month = 11, day = 1)
         self.year_started2.grid(row=6, column=0, columnspan=4, pady=5, padx=5)
         self.year_ended2 = DateEntry(self.num_time_tab, locale='en_US', date_pattern='yyyy-mm-dd',
                                     year = data_processor.last_update.year, month = data_processor.last_update.month, day = data_processor.last_update.day)
@@ -146,8 +149,6 @@ class GUI:
         stat = self.stats_options[self.selected_stat1.get()]
         from_year = self.year_started1.get_date()
         to_year = self.year_ended1.get_date()
-        if stat == -1:
-            print("Please select a statistic")
         print(self.searcher.get_most_stat_in1game_in_range(from_year, to_year, stat))
 
     ## search in tab2
@@ -158,8 +159,6 @@ class GUI:
             self.cutoff_errors()
             return
         stat = self.stats_options[self.selected_stat2.get()]
-        if stat == -1:
-            print("Please select a statistic")
         try:
             from_year = self.year_started2.get_date()
             to_year = self.year_ended2.get_date()
