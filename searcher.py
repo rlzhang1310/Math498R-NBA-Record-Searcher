@@ -12,28 +12,52 @@ class Searcher:
     def get_most_stat_in1game_in_range(self, start, end, stat):
         start = pd.to_datetime(start)
         end = pd.to_datetime(end)
+        if start > end:
+            print("End date less than start date")
+            return
         range = pd.date_range(start, end)
-        query_df = self.data[self.data['GAME_DATE'].isin(range)]
         try:
-            max_ftm_in_game = query_df[stat].max()
-            players_with_max = query_df.loc[query_df[stat] == max_ftm_in_game]
+            query_df = self.data[self.data['GAME_DATE'].isin(range)]
+            max_in_game = query_df[stat].max()
+            players_with_max = query_df.loc[query_df[stat] == max_in_game]
             # return players_with_max['PLAYER_NAME'].unique()
-            return players_with_max[["Season", "PLAYER_NAME", "Team", "GAME_DATE", "MATCHUP", "WL", stat]]
+            result = players_with_max[["Season", "PLAYER_NAME", "Team", "GAME_DATE", "MATCHUP", "WL", stat]]
+            if len(result) == 0:
+                print("Does not exist within specified parameters")
+                return
+            else:
+                return result
         except KeyError:
-            print(f"{stat} Stat not recorded in specified timeframe")
+            self.stat_does_not_exist_errors(stat)
 
     def get_num_times_stat_achieved_in_range(self, start, end, stat, number):
         start = pd.to_datetime(start)
         end = pd.to_datetime(end)
+        if start > end:
+            print("End date less than start date")
+            return
         range = pd.date_range(start, end)
         try:
             df = self.data[self.data['GAME_DATE'].isin(range)]
             num = df.loc[self.data[stat] >= number]
-            print(num[["Season", "PLAYER_NAME", "Team", "GAME_DATE", "MATCHUP", "WL", stat]])
-            return len(num)        
+            if len(num) == 0:
+                print("Does not exist within specified parameters")
+                return      
+            else:          
+                print(num[["Season", "PLAYER_NAME", "Team", "GAME_DATE", "MATCHUP", "WL", stat]])
+                return len(num)        
         except KeyError:
-            print(f"{stat} Stat not recorded in specified timeframe")
-
+            self.stat_does_not_exist_errors(stat)
+    
+    def stat_does_not_exist_errors(self, stat):
+        if stat == 'AST':
+            print(f"AST Stat not recorded until 1946-1947 Season")
+        elif stat == 'BLK':
+            print(f"BLK Stat not recorded until 1973-1974 Season")
+        elif stat == 'STL':
+            print(f"BLK Stat not recorded until 1973-1974 Season")
+        else:
+            print(f"{stat} has unknown error, check your parameters again")
             
     # def get_most_pts_in1game_in_range(self, start=1946, end=9999):
     #     start = pd.to_datetime(start)

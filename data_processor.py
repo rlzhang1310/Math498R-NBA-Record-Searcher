@@ -9,7 +9,7 @@ import requests
 class DataProcessor:
     def __init__(self, data):
         self.data = data
-        self.data['GAME_DATE'] = pd.to_datetime(self.data['GAME_DATE'])
+        self.data['GAME_DATE'] = pd.to_datetime(self.data['GAME_DATE'], format='mixed')
         self.last_update = self.data['GAME_DATE'].max()
 
     def update(self):
