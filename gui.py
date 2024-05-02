@@ -62,14 +62,18 @@ class GUI:
 
         ## entry for Start/End dates
         if self.stats_options[self.selected_stat1.get()] == 'AST': ## updates initial date in DateEntry on selected stat
-            self.year_started1 = DateEntry(self.one_game_tab, locale='en_US', date_pattern='yyyy-mm-dd', year = 1970, month = 1, day = 1)
+            self.year_started1 = DateEntry(self.one_game_tab, locale='en_US', date_pattern='yyyy-mm-dd', 
+                                           year = 1970, month = 1, day = 1)
         elif self.stats_options[self.selected_stat1.get()] == 'BLK' or self.stats_options[self.selected_stat1.get()] == 'STL':
-            self.year_started1 = DateEntry(self.one_game_tab, locale='en_US', date_pattern='yyyy-mm-dd', year = 1974, month = 1, day = 1)
+            self.year_started1 = DateEntry(self.one_game_tab, locale='en_US', date_pattern='yyyy-mm-dd', 
+                                           year = 1974, month = 1, day = 1)
         else:
-            self.year_started1 = DateEntry(self.one_game_tab, locale='en_US', date_pattern='yyyy-mm-dd', year = 1946, month = 11, day = 1)
+            self.year_started1 = DateEntry(self.one_game_tab, locale='en_US', date_pattern='yyyy-mm-dd', 
+                                           year = 1946, month = 11, day = 1)
         self.year_started1.grid(row=4, column=0, columnspan=4, pady=5, padx=5)
         self.year_ended1 = DateEntry(self.one_game_tab, locale='en_US', date_pattern='yyyy-mm-dd',
-                                    year = data_processor.last_update.year, month = data_processor.last_update.month, day = data_processor.last_update.day)
+                                    year = data_processor.last_update.year, month = data_processor.last_update.month, 
+                                    day = data_processor.last_update.day)
         self.year_ended1.grid(row=4, column=2, columnspan=4, pady=5, padx=5)
 
         # Search button
