@@ -47,7 +47,7 @@ class Searcher:
         try:
             df = self.data[self.data['GAME_DATE'].isin(Date_range)]
             cur_stat = '' # keep track of current stat being filtered
-            for i in range(2): # iterably filter df
+            for i in range(len(stats): # iterably filter df
                 df = df.loc[df[stats[i]] == numbers[i]]
                 cur_stat = stats[i]
             if len(df) == 0:
