@@ -9,19 +9,24 @@ class Searcher:
     def __init__(self, data):
         self.data = data
 
-    def get_most_stat_in1game_in_range(self, start, end, stat):
+    def get_most_stat_in1game_in_range(self, start, end, stats):
         start = pd.to_datetime(start)
         end = pd.to_datetime(end)
         if start > end:
             print("End date less than start date")
             return
-        range = pd.date_range(start, end)
+        date_range = pd.date_range(start, end)
         try:
-            query_df = self.data[self.data['GAME_DATE'].isin(range)]
-            max_in_game = query_df[stat].max()
-            players_with_max = query_df.loc[query_df[stat] == max_in_game]
+            query_df = self.data[self.data['GAME_DATE'].isin(date_range)]
+            res_df = pd.DataFrame()
+            for stat in stats: # iterate each stat
+                max_in_game = query_df[stat].max() # get max
+                players_with_max = query_df.loc[query_df[stat] == max_in_game]
+                players_with_max = players_with_max[["Season", "PLAYER_NAME", "Team", "GAME_DATE", "MATCHUP", "WL", stat]]
+                res_df = pd.concat([players_with_max, res_df]) # add to final dataframe that we return
+
             # return players_with_max['PLAYER_NAME'].unique()
-            result = players_with_max[["Season", "PLAYER_NAME", "Team", "GAME_DATE", "MATCHUP", "WL", stat]]
+            result = res_df[["Season", "PLAYER_NAME", "Team", "GAME_DATE", "MATCHUP", "WL"]+stats]
             if len(result) == 0:
                 print("Does not exist within specified parameters")
                 return
@@ -30,24 +35,29 @@ class Searcher:
         except KeyError:
             self.stat_does_not_exist_errors(stat)
 
-    def get_num_times_stat_achieved_in_range(self, start, end, stat, number):
+    def get_num_times_stat_achieved_in_range(self, start, end, stats, numbers):
+        if len(stats) != len(numbers):
+            return 'ERROR: lists must be same size'
         start = pd.to_datetime(start)
         end = pd.to_datetime(end)
         if start > end:
             print("End date less than start date")
             return
-        range = pd.date_range(start, end)
+        Date_range = pd.date_range(start, end)
         try:
-            df = self.data[self.data['GAME_DATE'].isin(range)]
-            num = df.loc[self.data[stat] >= number]
-            if len(num) == 0:
+            df = self.data[self.data['GAME_DATE'].isin(Date_range)]
+            cur_stat = '' # keep track of current stat being filtered
+            for i in range(2): # iterably filter df
+                df = df.loc[df[stats[i]] == numbers[i]]
+                cur_stat = stats[i]
+            if len(df) == 0:
                 print("Does not exist within specified parameters")
                 return      
             else:          
-                print(num[["Season", "PLAYER_NAME", "Team", "GAME_DATE", "MATCHUP", "WL", stat]])
-                return len(num)        
+                print(df[["Season", "PLAYER_NAME", "Team", "GAME_DATE", "MATCHUP", "WL"]+stats])
+                return len(df)        
         except KeyError:
-            self.stat_does_not_exist_errors(stat)
+            self.stat_does_not_exist_errors(cur_stat)
     
     def stat_does_not_exist_errors(self, stat):
         if stat == 'AST':
